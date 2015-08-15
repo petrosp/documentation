@@ -25,7 +25,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'pygments.rb', '>= 0.5', '< 1.0'
   s.add_dependency 'nifty-attachments', '>= 1.0.3', "< 2"
   s.add_dependency 'nifty-dialog', '~> 1'
-  
+  s.add_dependency 'acts_as_tree'
+
   s.add_development_dependency 'sqlite3', '~> 1.3'
   
 end
