@@ -13,7 +13,9 @@
     %nav.pages
       .inner
         = render 'layouts/documentation/search'
-        = documentation_navigation_tree_for(@page)
+        -#= documentation_navigation_tree
+        = documentation_navigation_tree_for(@page,include_back: true)
+
     %section.content
       .inner  
         = flash_messages

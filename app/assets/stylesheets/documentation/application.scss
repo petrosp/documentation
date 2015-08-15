@@ -320,3 +320,27 @@ p.noSearchResults {
   background-size:170px;
   padding-top:200px;
 }
+
+a.nav-item {
+  display: block;
+  text-decoration: none;
+  font-size: 14px;
+  margin: 0 0 5px 0;
+  float:left;
+  clear: both;
+  &:hover {background-color: orange;}
+  &.zero {
+    margin-left:2px;
+  }
+  &.one {
+    margin-left:12px;
+  }
+  &.two {
+    margin-left:22px;
+  }
+  &.three {
+    margin-left:32px;
+  }
+  &.four {margin-left: 42px;}
+  &.five {margin-left: 52px;}
+}

@@ -6,6 +6,7 @@ require 'dynamic_form'
 require 'ostruct'
 require 'nifty/attachments'
 require 'nifty/dialog'
+require 'acts_as_tree'
 
 require 'documentation/version'
 require 'documentation/errors'
