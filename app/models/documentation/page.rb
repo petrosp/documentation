@@ -1,14 +1,17 @@
 module Documentation
   class Page < ActiveRecord::Base
+    extend ActsAsTree::TreeWalker
+
+    acts_as_tree order: "position"
     
     validates :title, :presence => true
     validates :position, :presence => true
     validates :permalink, :presence => true, :uniqueness => {:scope => :parent_id}
     
     default_scope -> { order(:position) }
-    scope :roots, -> { where(:parent_id => nil) }
+    # scope :roots, -> { where(:parent_id => nil) }
     
-    belongs_to :parent, :class_name => 'Documentation::Page', :foreign_key => 'parent_id'
+    # belongs_to :parent, :class_name => 'Documentation::Page', :foreign_key => 'parent_id'
     
     before_validation do
       if self.position.blank?
@@ -55,6 +58,10 @@ module Documentation
       @parents ||= self.parent ? [self.parent.parents, self.parent].flatten : []
     end
 
+    def full_path
+      parents.push(self).map(&:permalink).join("/")
+    end
+
     #
     # Return a full breadcrumb to this page (as it has been loaded)
     #
@@ -81,7 +88,8 @@ module Documentation
         if parents.empty?
           self.permalink
         else
-          previous = breadcrumb.compact.map(&:permalink).compact
+          # previous = breadcrumb.compact.map(&:permalink).compact
+          previous = ancestors.map(&:permalink).reverse.push(permalink)
           previous.empty? ? self.permalink : previous.join('/')
         end
       end

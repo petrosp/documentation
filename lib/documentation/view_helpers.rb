@@ -20,7 +20,7 @@ module Documentation
     #
     def documentation_breadcrumb_for(page, options = {})
       options[:root_link] = options[:root_link].nil? ? t('documentation.helpers.documentation_breadcrumb_for.default_root_link') : options[:root_link]
-      options[:class]     ||= 'breadcrumb'
+      options[:class] ||= 'breadcrumb'
 
       String.new.tap do |s|
         s << "<nav class='#{options[:class]}'><ul>"
@@ -42,12 +42,24 @@ module Documentation
     #
     # Return a default navigation tree for the given page
     #
+
+    def documentation_navigation_tree
+      lvls = {"0": "zero", "1": "one", "2": "two", "3": "three", "4": "four", "5": "five"}
+      capture_haml do
+        ::Documentation::Page.walk_tree do |page, level|
+          haml_concat link_to "#{page.title}", page_path(page.full_permalink), class: "#{lvls[level.to_s.to_sym]} nav-item"
+        end
+
+      end
+
+    end
+
     def documentation_navigation_tree_for(page, options = {})
       active_page_type = nil
       items = String.new.tap do |s|
         if page.is_a?(::Documentation::Page)
 
-          pages = page.navigation.select { |p,c| documentation_authorizer.can_view_page?(p) }
+          pages = page.navigation.select { |p, c| documentation_authorizer.can_view_page?(p) }
 
           pages.each do |p, children|
             s << "<li>"
@@ -72,7 +84,7 @@ module Documentation
 
       String.new.tap do |output|
         output << "<ul>"
-        if options[:include_back] && page && page.breadcrumb.size > 1
+        if options[:include_back] && page && page.breadcrumb.size > 2
           if active_page_type == :root && page.has_children?
             back_page = page.breadcrumb[-2]
           elsif active_page_type == :child && !page.has_children?
@@ -151,7 +163,7 @@ module Documentation
           s << "<h4><a href='#{documentation_doc_root}/#{page.full_permalink}'>#{page.title}</a></h4>"
           unless page.parents.empty?
             s << "<p class='in'>#{t('documentation.helpers.documentation_search_results.in')} "
-            s << page.parents.map { |c| link_to(h(c.title), "#{documentation_doc_root}/#{c.full_permalink}")}.join(" &#8658; ").html_safe
+            s << page.parents.map { |c| link_to(h(c.title), "#{documentation_doc_root}/#{c.full_permalink}") }.join(" &#8658; ").html_safe
             s << "</p>"
           end
           s << "<p class='excerpt'>#{result.excerpt_for(page)}</p>"

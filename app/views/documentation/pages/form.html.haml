@@ -7,6 +7,9 @@
     %p.title= f.text_field :title, :placeholder => t('.title_placeholder')
     %p.content= f.text_area :content, :placeholder => t('.content_placeholder')
     %dl
+      %dt= f.label :parent_page
+      %dd= f.select :parent_id, Documentation::Page.all.reject{|p| p.permalink == @page.permalink}.map{|p| [p.title,p.id]}, placeholder: "Choose parent"
+    %dl
       %dt= f.label :permalink
       %dd= f.text_field :permalink, :placeholder => t('.permalink_placeholder')
 

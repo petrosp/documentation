@@ -82,7 +82,7 @@ module Documentation
     end
 
     def safe_params
-      params.require(:page).permit(:title, :permalink, :content, :favourite)
+      params.require(:page).permit(:title, :permalink, :content, :favourite, :parent_id)
     end
 
     def screenshot_params
