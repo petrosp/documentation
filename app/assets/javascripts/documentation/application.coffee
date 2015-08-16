@@ -3,6 +3,7 @@
 #= require documentation/jquery-ui
 #= require documentation/jquery.autosize
 #= require nifty/dialog
+#= require documentation/livesearch
 
 $ ->
   $('form.pageForm textarea').autosize({append: '\n\n'})
@@ -76,3 +77,11 @@ $ ->
               console.log xhr.responseText
 
           false
+$(document).ready ->
+  base_url = window.location.protocol + '//' + window.location.host
+  $('#SearchSearch').searchbox
+    url: base_url + '/docs/search'
+    param: 'query'
+    dom_id: '#livesearch'
+    loading_css: '#livesearch_loading'
+  return

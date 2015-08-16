@@ -1,7 +1,6 @@
 - @page_title = t('.title', :query => params[:query])
 
 %section.page
-  
   - if @result.empty?
     %p.noSearchResults= t('.no_results', :query => params[:query])
   - else
